@@ -20,3 +20,11 @@ ollama run mistral-7b-instruct-v0.1.Q5_K_M
 ```sh
 docker run -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "xpack.security.http.ssl.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:8.12.1
 ```
+
+## Streamlit:
+
+```sh
+pip install streamlit
+
+streamlit run ./model_gui/streamlit_app.py --server.port 8502
+```
