@@ -2,7 +2,6 @@ from langchain.prompts import ChatPromptTemplate
 from langchain_community.llms.ollama import Ollama
 from langchain_elasticsearch import ElasticsearchStore
 
-
 def rag_prompt(
     query: str,
     model: Ollama,
@@ -30,12 +29,15 @@ def rag_prompt(
     
     prompt = prompt_template.format(context=context_text, question=query)
     
-    print(prompt)
+    # Wrap the final prompt in the Mistral-specific format
+    final_prompt = f"<s>[INST] {prompt} [/INST]"
 
-    response_text = model.invoke(prompt)
+    print(final_prompt)
+
+    response_text = model.invoke(final_prompt)
 
     sources = [doc.metadata.get("id", None) for doc in results]
-    formatted_response = f"Odpowiedź: {response_text}\Źródła: {sources}"
+    formatted_response = f"Odpowiedź: {response_text}\nŹródła: {sources}"
     
     print(formatted_response)
     
