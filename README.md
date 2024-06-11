@@ -30,5 +30,5 @@ docker run -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabl
 ```sh
 pip install streamlit
 
-streamlit run ./model_gui/streamlit_app.py --server.port 8502
+streamlit run streamlit_app.py --server.port 8502
 ```
