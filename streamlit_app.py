@@ -6,6 +6,8 @@ from model_utils import rag_prompt
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.llms.ollama import Ollama
 
+MODEL_NAME = "mistral-7b-instruct-v0.3.Q8_0:latest"
+
 st.set_page_config(page_title="LLM with RAG system")
 st.title("LLM with RAG system")
 
@@ -16,9 +18,7 @@ with st.chat_message("assistant"):
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-model = Ollama(model='mistral-7b-instruct-v0.1.Q5_K_M:latest')
-
-
+model = Ollama(model=MODEL_NAME)
     
 # conversation
 for message in st.session_state.chat_history:
