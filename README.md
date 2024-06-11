@@ -3,32 +3,29 @@ This project showcases the implementation of a Retrieval-Augmented Generation (R
 
 
 ## Model prep:
+Install ollama from https://ollama.com/download or by running
+`curl -fsSL https://ollama.com/install.sh | sh` on Linux.
 
-install ollama https://ollama.com/download 
-`curl -fsSL https://ollama.com/install.sh | sh` (on linux)
-
-Download:
-https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.1-GGUF
-
-model: `mistral-7b-instruct-v0.1.Q5_K_M.gguf`
+Download `mistral-7b-instruct-v0.3.Q8_0.gguf` model from https://huggingface.co/SanctumAI/Mistral-7B-Instruct-v0.3-GGUF/tree/main and run commands below to create Ollama model:
 
 ```sh
-cp mistral-7b-instruct-v0.1.Q5_K_M.gguf ./models 
+cp mistral-7b-instruct-v0.3.Q8_0.gguf ./models 
 cd models
-ollama create mistral-7b-instruct-v0.1.Q5_K_M -f ./mistral-7b-instruct-v0.1.Q5_K_M
-ollama run mistral-7b-instruct-v0.1.Q5_K_M
+ollama create mistral-7b-instruct-v0.3.Q8_0 -f ./mistral-7b-instruct-v0.3.Q8_0
+ollama run mistral-7b-instruct-v0.3.Q8_0
 ```
 
 ## ElasticSearch db prep:
-
 ```sh
 docker-compose up
 ```
 
-## Streamlit:
-
+## Install dependencies
 ```sh
-pip install streamlit
+pip install langchain-elasticsearch langchain-community tqdm pypdf streamlit
+```
 
+## Run Streamlit GUI:
+```sh
 streamlit run streamlit_app.py --server.port 8502
 ```
