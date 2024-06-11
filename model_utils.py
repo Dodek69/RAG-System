@@ -1,44 +1,22 @@
-from langchain.prompts import ChatPromptTemplate
 from langchain_community.llms.ollama import Ollama
 from langchain_elasticsearch import ElasticsearchStore
 
-def rag_prompt(
-    query: str,
-    model: Ollama,
-    db: ElasticsearchStore,
-    ) -> str:
-    PROMPT_TEMPLATE = """
-    Odpowiedz na pytanie bazując tylko na poniższym kontekście:
-
-    {context}
-
-    ---
-
-    Odpowiedz na to pytanie bazując na powyższym kontekście: {question}
-    Odpowiedz w języku polskim
-    """
-
-    results = db.similarity_search(
-        query, 
-        k=5,
-        )
-
+def rag_prompt(query: str, model: Ollama, db: ElasticsearchStore) -> str:
+    results = db.similarity_search(query, k=5)
     context_text = "\n\n---\n\n".join([doc.page_content for doc in results])
-    
-    prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
-    
-    prompt = prompt_template.format(context=context_text, question=query)
-    
-    # Wrap the final prompt in the Mistral-specific format
-    final_prompt = f"<s>[INST] {prompt} [/INST]"
 
-    print(final_prompt)
+    # Format the prompt manually according to the template
+    prompt = f"Kontekst: {context_text}\n\nPytanie: {query}"
 
-    response_text = model.invoke(final_prompt)
+    # Print the final prompt for debugging purposes
+    print(prompt)
+
+    # Directly invoke the model with the formatted prompt
+    response_text = model.invoke(prompt)
 
     sources = [doc.metadata.get("id", None) for doc in results]
     formatted_response = f"Odpowiedź: {response_text}\nŹródła: {sources}"
-    
+
     print(formatted_response)
-    
+
     return formatted_response
