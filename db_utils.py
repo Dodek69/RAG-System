@@ -7,17 +7,23 @@ from tqdm import tqdm
 
 
 
-def add_documents_to_db(db: ElasticsearchStore, document_chunks: List,  db_kwargs: Dict) -> ElasticsearchStore:
-    with tqdm(total=len(document_chunks), desc="Ingesting documents") as pbar:
-        for chunk in document_chunks:
-            if db:
-                db.add_documents([chunk])
-            else:
-                db = ElasticsearchStore.from_documents([chunk], **db_kwargs)
-            pbar.update(1)  
-            
+def add_documents_to_db(db: ElasticsearchStore, document_chunks: List, db_kwargs: Dict, bulk_upload: bool = True) -> ElasticsearchStore:
+    if bulk_upload:
+        print("Bulk ingesting documents...")
+        if db:
+            db.add_documents(document_chunks)
+        else:
+            db = ElasticsearchStore.from_documents(document_chunks, **db_kwargs)
+    else:
+        with tqdm(total=len(document_chunks), desc="Ingesting documents") as pbar:
+            for chunk in document_chunks:
+                if db:
+                    db.add_documents([chunk])
+                else:
+                    db = ElasticsearchStore.from_documents([chunk], **db_kwargs)
+                pbar.update(1)
+                
     return db
-            
             
             
 def remove_index(index_name: str, db_config: Dict) -> None:
