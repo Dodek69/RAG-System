@@ -30,7 +30,7 @@ def chunk_documents(pdf_directory: str) -> List:
     document_loader = PyPDFDirectoryLoader(pdf_directory)
     document_chunks = document_loader.load_and_split(
         text_splitter=RecursiveCharacterTextSplitter(
-            separators=["\n\n", "\n"], chunk_size=256, chunk_overlap=0
+            separators=["\n\n", "\n"], chunk_size=1024, chunk_overlap=256
             # # Set chunk size and overlap as needed for your use case.
             # chunk_size=100,
             # chunk_overlap=20,
