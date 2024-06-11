@@ -1,13 +1,22 @@
 FROM ./mistral-7b-instruct-v0.3.Q8_0.gguf
 
-TEMPLATE """{{ if .System }}<|im_start|>system
-{{ .System }}<|im_end|>
-{{ end }}{{ if .Prompt }}<|im_start|>user
-{{ .Prompt }}<|im_end|>
-{{ end }}<|im_start|>assistant
+# Sets the temperature to 0.7 [higher is more creative, lower is more coherent]
+PARAMETER temperature 0.2
+
+PARAMETER num_ctx 32768
+
+# Sets the random number seed to 42 for reproducible results
+PARAMETER seed 42
+
+SYSTEM """You are an specialized assistant capable of providing detailed and accurate responses, based on the provided context."""
+
+# Sets a custom template for the prompt
+TEMPLATE """<s>[INST] {{ if .System }}system
+{{ .System }}
+{{ end }}{{ if .Prompt }}user
+{{ .Prompt }}
+[/INST]{{ .Response }}"""
+
+LICENSE """
+This model is provided under the Apache 2.0 license.
 """
-
-SYSTEM """"""
-
-PARAMETER stop <|im_start|>
-PARAMETER stop <|im_end|>
