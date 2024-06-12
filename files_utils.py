@@ -57,10 +57,13 @@ def chunk_documents(pdf_directory: str, model_name: str) -> List[Document]:
     """
     try:
         # Initialize the document loader
-        document_loader = PyPDFDirectoryLoader(pdf_directory)
+        document_loader = PyPDFDirectoryLoader(pdf_directory, recursive=True)
+        
         
         # Load the documents
         documents = document_loader.load()
+        
+        print(f"Loaded {len(documents)} documents." if documents else "No documents found.")
         
         # Initialize the semantic chunker with local embeddings
         embedding = OllamaEmbeddings(model=model_name)
