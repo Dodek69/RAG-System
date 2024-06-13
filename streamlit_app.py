@@ -6,12 +6,21 @@ from langchain_community.llms.ollama import Ollama
 from config import MODEL_NAME
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.llms.ollama import Ollama
-from db_utils import add_documents_to_db, remove_index, remove_document, fetch_all
+from db_utils import add_documents_to_db, remove_index, remove_document, fetch_all, upload_files, clear_folder_on_exit
 from files_utils import chunk_documents
 from model_utils import rag_prompt
 from langchain_elasticsearch import ElasticsearchStore
 from langchain_community.embeddings import OllamaEmbeddings
 from config import MODEL_NAME, ES_PORT, ES_INDEX_NAME, ES_DISTANCE_STRATEGY
+import os
+import atexit
+
+st.set_page_config(page_title="LLM with RAG system")
+st.title("LLM with RAG system")
+
+# Uplaod files
+uploaded_files = st.file_uploader(label = 'Upload your pdf files', accept_multiple_files=True, type='pdf')
+
 
 EMBEDDING = OllamaEmbeddings(model=MODEL_NAME)
 DB_KWARGS = {
@@ -23,9 +32,9 @@ DB_KWARGS = {
 DB = ElasticsearchStore(**DB_KWARGS)
 MODEL = Ollama(model=MODEL_NAME)
 
-st.set_page_config(page_title="LLM with RAG system")
-st.title("LLM with RAG system")
+upload_files(uploaded_files, DB_KWARGS, MODEL_NAME)
 
+# chat with LLM
 with st.chat_message("assistant"):
     st.write("Hello :)")
 
@@ -61,3 +70,6 @@ if user_query is not None and user_query != "":
         #ai_response = st.write_stream(get_response(user_query, st.session_state.chat_history))
         
     st.session_state.chat_history.append(AIMessage(ai_response))
+    
+# flush temp folder
+atexit.register(clear_folder_on_exit, './data/temp')

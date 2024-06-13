@@ -27,5 +27,5 @@ pip install langchain-elasticsearch langchain-community tqdm pypdf streamlit
 
 ## Run Streamlit GUI:
 ```sh
-streamlit run streamlit_app.py --server.port 8502
+streamlit run streamlit_app.py --server.enableXsrfProtection false --server.port 8540
 ```
