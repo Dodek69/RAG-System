@@ -34,6 +34,7 @@ MODEL = Ollama(model=MODEL_NAME)
 
 upload_files(uploaded_files, DB_KWARGS, MODEL_NAME)
 
+
 # chat with LLM
 with st.chat_message("assistant"):
     st.write("Hello :)")
@@ -72,4 +73,4 @@ if user_query is not None and user_query != "":
     st.session_state.chat_history.append(AIMessage(ai_response))
     
 # flush temp folder
-atexit.register(clear_folder_on_exit, './data/temp')
+atexit.register(clear_folder, './data/temp')

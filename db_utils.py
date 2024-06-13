@@ -7,6 +7,7 @@ from tqdm import tqdm
 import os
 import atexit
 import shutil
+import glob
 from files_utils import chunk_documents
 
 
@@ -92,7 +93,7 @@ def fetch_all(index_name: str, db_config: Dict) -> None:
         print(f"An error occurred: {e}")
         
 
-def clear_folder_on_exit(folder_path):
+def clear_folder(folder_path):
     try:
         for filename in os.listdir(folder_path):
             file_path = os.path.join(folder_path, filename)
@@ -108,10 +109,15 @@ def clear_folder_on_exit(folder_path):
 
 def search_pdf_in_subfolders(directory, pdf_filename):
     found = False
-    for root, dirs, files in os.walk(directory):
-        if pdf_filename in files:
-            found = True
-            break
+    search_pattern = os.path.join(directory, '**', pdf_filename)
+    pdf_files = glob.glob(search_pattern, recursive=True)
+    
+    if pdf_files:
+        found = True
+        print(f"Found {pdf_filename} in:")
+        for file_path in pdf_files:
+            print(f"- {file_path}")
+    
     return found
 
 def upload_files(uploaded_files, db_kwargs, model_name):
@@ -127,7 +133,8 @@ def upload_files(uploaded_files, db_kwargs, model_name):
                 file_path = os.path.join(SAVE_DIR, file.name)
                 with open(file_path, "wb") as f:
                     f.write(file.getbuffer())
-    
+
     pdf_directory = "./data/temp"
     document_chunks = chunk_documents(pdf_directory=pdf_directory, model_name=model_name)
     add_documents_to_db(db=None, document_chunks=document_chunks, db_kwargs=db_kwargs, bulk_upload=True)
+    clear_folder(pdf_directory)
