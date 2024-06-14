@@ -1,4 +1,4 @@
-FROM ./mistral-7b-instruct-v0.3.Q8_0.gguf
+FROM ./Mistral-7B-Instruct-v0.3.Q8_0.gguf
 
 # Sets the temperature to 0.2 for more factual and coherent responses
 PARAMETER temperature 0.2
