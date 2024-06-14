@@ -8,7 +8,7 @@ from db_utils import add_documents_to_db, remove_index, remove_document, fetch_a
 from files_utils import chunk_documents
 from model_utils import rag_prompt
 from langchain_elasticsearch import ElasticsearchStore
-from config import MODEL_NAME, ES_PORT, ES_INDEX_NAME, ES_DISTANCE_STRATEGY
+from config import MODEL_NAME, ES_PORT, ES_INDEX_NAME, ES_DISTANCE_STRATEGY, CONTEXT_CHAR_THRESHOLD
 import atexit
 
 st.set_page_config(page_title="LLM with RAG system")
@@ -62,7 +62,8 @@ if user_query is not None and user_query != "":
         ai_response = rag_prompt(
                     query = user_query,
                     model=MODEL,
-                    db=DB)
+                    db=DB,
+                    context_char_threshold=CONTEXT_CHAR_THRESHOLD)
         st.markdown(ai_response)
         # uncomment after fixing get_response() and delete what is above
         #ai_response = st.write_stream(get_response(user_query, st.session_state.chat_history))
