@@ -1,0 +1,25 @@
+FROM ./Lexi-Llama-3-8B-Uncensored_Q8_0.gguf
+
+# Sets the temperature to 0.2 for more factual and coherent responses
+PARAMETER temperature 0.2
+
+# Sets the context window size to 8192, controls how many tokens the LLM can use as context to generate the next token
+PARAMETER num_ctx 8192
+
+# Sets the random number seed to 42 for reproducible results
+PARAMETER seed 42
+
+# Sets a custom system message to specify the behavior of the chat assistant
+SYSTEM """Jesteś asystentem do zadań związanych z odpowiadaniem na pytania. Użyj poniższych fragmentów kontekstu, aby odpowiedzieć na pytanie. Jeśli nie znasz odpowiedzi, po prostu powiedz, że nie wiesz. Użyj maksymalnie trzech zdań i zachowaj odpowiedź zwięzłą. Odpowiedz po polsku."""
+
+# Sets a custom template for the prompt
+TEMPLATE """{{ if .System }}<|start_header_id|>system<|end_header_id|>
+{{ .System }}<|eot_id|>{{ end }}{{ if .Prompt }}<|start_header_id|>user<|end_header_id|>
+{{ .Prompt }}<|eot_id|>{{ end }}<|start_header_id|>assistant<|end_header_id|>
+{{ .Response }}<|eot_id|>
+"""
+
+# Specifies the legal license under which the model is shared or distributed
+LICENSE """
+This model is provided under the META LLAMA 3 COMMUNITY LICENSE AGREEMENT.
+"""
