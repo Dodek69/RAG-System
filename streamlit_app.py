@@ -6,7 +6,7 @@ from langchain_community.llms.ollama import Ollama
 from config import MODEL_NAME
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.llms.ollama import Ollama
-from db_utils import add_documents_to_db, remove_index, remove_document, fetch_all, upload_files, clear_folder_on_exit
+from db_utils import add_documents_to_db, remove_index, remove_document, fetch_all, upload_files, clear_folder
 from files_utils import chunk_documents
 from model_utils import rag_prompt
 from langchain_elasticsearch import ElasticsearchStore
