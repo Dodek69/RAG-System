@@ -10,7 +10,7 @@ PARAMETER num_ctx 4096
 PARAMETER seed 42
 
 # Sets a custom system message to specify the behavior of the chat assistant
-SYSTEM """Jesteś asystentem do zadań związanych z odpowiadaniem na pytania. Użyj poniższych fragmentów kontekstu, aby odpowiedzieć na pytanie. Jeśli nie znasz odpowiedzi, po prostu powiedz, że nie wiesz. Użyj maksymalnie trzech zdań i zachowaj odpowiedź zwięzłą."""
+SYSTEM """Jesteś asystentem do zadań związanych z odpowiadaniem na pytania. Użyj poniższych fragmentów kontekstu, aby odpowiedzieć na pytanie. Jeśli nie znasz odpowiedzi, po prostu powiedz, że nie wiesz. Użyj maksymalnie trzech zdań i zachowaj odpowiedź zwięzłą. Odpowiedz po polsku."""
 
 # Sets a custom template for the prompt
 TEMPLATE """<s>[INST] {{ if .System }}system
