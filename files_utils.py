@@ -1,8 +1,8 @@
 from typing import List
 import logging
 from langchain_experimental.text_splitter import SemanticChunker
-from langchain.embeddings import OllamaEmbeddings
-from langchain.document_loaders.pdf import PyPDFDirectoryLoader
+from langchain_community.embeddings import OllamaEmbeddings
+from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain_core.documents.base import Document
 
 def process_document(document: Document, chunker) -> List[Document]:

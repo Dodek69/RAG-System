@@ -4,15 +4,11 @@ from model_utils import rag_prompt
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.llms.ollama import Ollama
 from config import MODEL_NAME
-from langchain_community.embeddings import OllamaEmbeddings
-from langchain_community.llms.ollama import Ollama
 from db_utils import add_documents_to_db, remove_index, remove_document, fetch_all, upload_files, clear_folder
 from files_utils import chunk_documents
 from model_utils import rag_prompt
 from langchain_elasticsearch import ElasticsearchStore
-from langchain_community.embeddings import OllamaEmbeddings
 from config import MODEL_NAME, ES_PORT, ES_INDEX_NAME, ES_DISTANCE_STRATEGY
-import os
 import atexit
 
 st.set_page_config(page_title="LLM with RAG system")
@@ -31,6 +27,7 @@ DB_KWARGS = {
 }
 DB = ElasticsearchStore(**DB_KWARGS)
 MODEL = Ollama(model=MODEL_NAME)
+
 
 upload_files(uploaded_files, DB_KWARGS, MODEL_NAME)
 
