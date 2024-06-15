@@ -10,8 +10,7 @@ Download `Mistral-7B-Instruct-v0.3.Q8_0.gguf` model from https://huggingface.co/
 
 ```sh
 cp Mistral-7B-Instruct-v0.3.Q8_0.gguf ./models 
-cd models
-ollama create Mistral-7B-Instruct-v0.3.Q8_0.gguf -f ./Mistral-7B-Instruct-v0.3.Q8_0.gguf
+ollama create Mistral-7B-Instruct-v0.3.Q8_0.gguf -f ./models/Mistral-7B-Instruct-v0.3.Q8_0.gguf
 ```
 
 ## ElasticSearch db prep:
