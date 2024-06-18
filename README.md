@@ -21,6 +21,14 @@ docker-compose up
 pip install langchain-elasticsearch langchain-community tqdm pypdf streamlit langchain-experimental
 ```
 
+```sh
+pip install fastembed
+
+# or with GPU support
+
+pip install fastembed-gpu
+```
+
 ## Run Streamlit GUI:
 ```sh
 streamlit run streamlit_app.py --server.enableXsrfProtection false --server.port 8540
