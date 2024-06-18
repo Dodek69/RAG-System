@@ -1,7 +1,8 @@
 from typing import List
 import logging
 from langchain_experimental.text_splitter import SemanticChunker
-from langchain_community.embeddings import OllamaEmbeddings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.embeddings import FastEmbedEmbeddings
 from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain_core.documents.base import Document
 
@@ -44,13 +45,13 @@ def process_document(document: Document, chunker) -> List[Document]:
     return result
     
     
-def chunk_documents(pdf_directory: str, model_name: str) -> List[Document]:
+def chunk_documents(pdf_directory: str, chunker_type: str) -> List[Document]:
     """
     Loads and splits PDF documents into semantic chunks using local embeddings.
 
     Args:
         pdf_directory (str): Path to the directory containing PDF documents.
-        model_name (str): The name of the local embedding model.
+        chunker_type (str): The name of the chuning method.
 
     Returns:
         List[Document]: A list of document chunks with calculated IDs.
@@ -65,16 +66,24 @@ def chunk_documents(pdf_directory: str, model_name: str) -> List[Document]:
         
         print(f"Loaded {len(documents)} documents." if documents else "No documents found.")
         
-        # Initialize the semantic chunker with local embeddings
-        embedding = OllamaEmbeddings(model=model_name)
-        chunker = SemanticChunker(embedding)
+        
+        if chunker_type == "semantic":
+            embedding = FastEmbedEmbeddings()
+            chunker = SemanticChunker(embedding)
+        else:
+            chunker = RecursiveCharacterTextSplitter(
+                chunk_size=400,
+                chunk_overlap=200,
+                length_function=len,
+                is_separator_regex=False,
+            )
         
         all_chunks = []
         for doc in documents:
             # Process each document
             chunks = process_document(document=doc, chunker=chunker)
             all_chunks.extend(chunks)
-        
+
         return all_chunks
     
     except Exception as e:

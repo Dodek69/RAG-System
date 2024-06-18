@@ -5,7 +5,6 @@ from elasticsearch import Elasticsearch
 from elasticsearch.exceptions import NotFoundError
 from tqdm import tqdm
 import os
-import atexit
 import shutil
 import glob
 from files_utils import chunk_documents
@@ -26,7 +25,9 @@ def add_documents_to_db(db: ElasticsearchStore, document_chunks: List, db_kwargs
                 else:
                     db = ElasticsearchStore.from_documents([chunk], **db_kwargs)
                 pbar.update(1)
-                
+    
+    print("Done")
+    
     return db
             
             
@@ -120,7 +121,7 @@ def search_pdf_in_subfolders(directory, pdf_filename):
     
     return found
 
-def upload_files(uploaded_files, db_kwargs, model_name):
+def upload_files(uploaded_files, db_kwargs, chunker_type):
     SAVE_DIR = os.path.join('data', 'uploaded')
     TEMP_DIR = os.path.join('data', 'temp')
     if uploaded_files:
@@ -135,6 +136,6 @@ def upload_files(uploaded_files, db_kwargs, model_name):
                     f.write(file.getbuffer())
 
     pdf_directory = "./data/temp"
-    document_chunks = chunk_documents(pdf_directory=pdf_directory, model_name=model_name)
+    document_chunks = chunk_documents(pdf_directory=pdf_directory, chunker_type=chunker_type)
     add_documents_to_db(db=None, document_chunks=document_chunks, db_kwargs=db_kwargs, bulk_upload=True)
     clear_folder(pdf_directory)
