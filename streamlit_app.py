@@ -32,7 +32,7 @@ upload_files(uploaded_files, DB_KWARGS, CHUNKER_TYPE)
 
 # chat with LLM
 with st.chat_message("assistant"):
-    st.write("Hello :)")
+    st.write("Witam, jak mogę pomóc?")
 
 # Initialize chat history
 if "chat_history" not in st.session_state:
